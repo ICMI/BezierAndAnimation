@@ -44,8 +44,8 @@ class Cubic extends Node {
   model = {
     points: [],
     lineWidth: 1,
-    fill: '',
-    stroke: '',
+    fill: 'none',
+    stroke: 'none',
     lineDash: [],
     lineDashOffset: 0
   }
@@ -81,8 +81,8 @@ class Circle extends Node {
     y: 0,
     r: 10,
     lineWidth: 1,
-    fill: '',
-    stroke: '',
+    fill: 'none',
+    stroke: 'none',
     lineDashOffset: 0,
     lineDash: [],
     offsetPath: null,

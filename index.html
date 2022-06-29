@@ -20,59 +20,74 @@
     const director = new Director(context);
     director.start();
 
-    const cubicNode = new Cubic();
-    cubicNode.attr({
-      lineWidth: 2,
-      stroke: 'red',
-      points: [0, height / 2, width / 4, 0, 3 * width / 4, height, width, height / 2],
-      lineDash: [10, 10]
-    })
-    const circle = new Circle();
-    circle.attr({
-      fill: 'black',
-      x: width / 2,
-      y: height / 2,
-      r: 30,
-      lineDash: [10, 10],
-      // offsetPath: cubicNode
-    })
-    director.nodeManager.addNode(cubicNode)
-    director.nodeManager.addNode(circle)
+    // const cubicNode = new Cubic();
+    // cubicNode.attr({
+    //   lineWidth: 2,
+    //   stroke: 'red',
+    //   points: [0, height / 2, width / 4, 0, 3 * width / 4, height, width, height / 2],
+    //   lineDash: [10, 10],
+    // })
+    // const circleNode = new Circle();
+    // circleNode.attr({
+    //   fill: 'black',
+    //   x: width / 2,
+    //   y: height / 2,
+    //   r: 30,
+    //   stroke: 'red',
+    //   // lineDash: [10, 10],
+    //   offsetPath: cubicNode
+    // })
+    // director.nodeManager.addNode(cubicNode)
+    // director.nodeManager.addNode(circleNode)
 
 
-    const animation2 = new Animation({
-      duration: 1000,
-      target: circle,
-      ease: [1, 0, 0, 1],
-      repeat: true,
-      from: {
-        x: 0,
-        y: 0
-      },
-      to: {
-        x: width / 2,
-        y: height / 2
-      }
-    })
-    director.animationManager.addAnimation(animation2)
-
-    // const animation3 = new Animation({
+    // const animation2 = new Animation({
     //   duration: 1000,
-    //   target: cubicNode,
-    //   // ease: [1, 0, 0, 1],
+    //   target: circleNode,
+    //   ease: [1, 0, 0, 1],
     //   repeat: true,
+    //   from: {
+    //     x: 0,
+    //     y: 0
+    //   },
+    //   to: {
+    //     x: width / 2,
+    //     y: height / 2
+    //   }
+    // })
+    // director.animationManager.addAnimation(animation2)
+
+    // director.animationManager.addAnimation(new Animation({
+    //   duration: 100,
+    //   target: cubicNode,
+    //   // ease: [1, 0, 0, 1], 使用线性差值
+    //   repeat: true,
+    //   isReverse: false,
     //   from: {
     //     lineDashOffset: -20
     //   },
     //   to: {
     //     lineDashOffset: 0
     //   }
-    // })
-    // director.animationManager.addAnimation(animation3)
+    // }))
 
-    // const animation4 = new Animation({
-    //   duration: 1000,
-    //   target: circle,
+    // director.animationManager.addAnimation(new Animation({
+    //   duration: 100,
+    //   target: circleNode,
+    //   // ease: [1, 0, 0, 1],
+    //   repeat: true,
+    //   isReverse: false,
+    //   from: {
+    //     lineDashOffset: -20
+    //   },
+    //   to: {
+    //     lineDashOffset: 0
+    //   }
+    // }))
+
+    // director.animationManager.addAnimation(new Animation({
+    //   duration: 3000,
+    //   target: circleNode,
     //   ease: [1, 0, 0, 1],
     //   repeat: true,
     //   from: {
@@ -81,11 +96,10 @@
     //   to: {
     //     offsetDistance: 1
     //   }
-    // })
-    // director.animationManager.addAnimation(animation4)
+    // }))
 
     // const length = cubicNode.getTotalLength()
-    // const animation5 = new Animation({
+    // director.animationManager.addAnimation(new Animation({
     //   duration: 1000,
     //   target: cubicNode,
     //   ease: [1, 0, 0, 1],
@@ -96,14 +110,12 @@
     //   to: {
     //     lineDash: [length, 0]
     //   }
-    // })
-    // director.animationManager.addAnimation(animation5)
+    // }))
 
     // const points = cubicNode.model.points
     // const animation6 = new Animation({
     //   duration: 1000,
     //   target: cubicNode,
-    //   ease: [1, 0, 0, 1],
     //   repeat: true,
     //   from: {
     //     points: cubicNode.model.points
@@ -113,6 +125,56 @@
     //   }
     // })
     // director.animationManager.addAnimation(animation6)
+
+    const { random } = Math;
+
+    const randomX = () => random() * width
+    const randomY = () => random() * height
+    for (let i = 0; i < 80; i++) {
+      const cubicNode = new Cubic();
+      const points = [0, 0, randomX(), randomY(), randomX(), randomY(), width, height]
+      cubicNode.attr({
+        lineWidth: 1,
+        stroke: 'red',
+        points,
+      })
+      const circleNode = new Circle();
+      circleNode.attr({
+        fill: 'black',
+        x: 0,
+        y: 0,
+        r: 5,
+        stroke: 'red',
+        offsetPath: cubicNode
+      })
+      director.nodeManager.addNode(cubicNode)
+      director.nodeManager.addNode(circleNode)
+
+      director.animationManager.addAnimation(new Animation({
+        duration: 3000,
+        target: circleNode,
+        ease: [1, 0, 0, 1],
+        repeat: true,
+        from: {
+          offsetDistance: 0
+        },
+        to: {
+          offsetDistance: 1
+        }
+      }))
+
+      director.animationManager.addAnimation(new Animation({
+        duration: 5000,
+        target: cubicNode,
+        repeat: true,
+        from: {
+          points: cubicNode.model.points
+        },
+        to: {
+          points: [points[0], points[1], points[4], points[5], points[2], points[3], points[6], points[7]]
+        }
+      }))
+    }
 
   </script>
 </body>

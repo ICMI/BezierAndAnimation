@@ -4,10 +4,11 @@ class Animation {
   from = {};
   to = {};
   duration = 0;
-  ease = []; // 示例： [0.42,0,0.58,1] => ease-in-out
+  ease; // 示例： [0.42,0,0.58,1] => ease-in-out
   repeat = true;
   done = false;
   currentTime = 0;
+  isReverse = true;
 
   constructor(option) {
     Object.assign(this, option)
@@ -25,8 +26,10 @@ class Animation {
     let easedProgress = progress;
     if (this.ease) {
       // 如果存在缓冲曲线配置，计算缓动函数值
+      // 二分法求t
       const t = binarySolveX(0, this.ease[0], this.ease[2], 1, progress)
-      easedProgress = cubicBezier(0, this.ease[1], this.ease[3], 1, progress);
+      // 根据t计算一次贝塞尔表达式，得到y
+      easedProgress = cubicBezier(0, this.ease[1], this.ease[3], 1, t);
     }
 
     // 对每个属性计算差值更新图形属性
@@ -41,6 +44,8 @@ class Animation {
     // 如果动画进度结束，结束动画或repeat
     if (progress === 1) {
       if (this.repeat) {
+        // 效果演示，切换方向
+        if (this.isReverse) [this.from, this.to] = [this.to, this.from]
         this.currentTime = 0
       } else {
         this.done = true;
